@@ -1,21 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import theme from './src/theme/theme';
+
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
+
+import { ThemeProvider } from 'styled-components/native';
+
+/**
+ *
+ * Screens
+ */
+import Missions from './src/screens/Missions';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+   const [ fontsLoaded, error ] = useFonts({
+      'Jost-Bold': require('./assets/fonts/Jost-Bold.ttf'),
+      'Jost-Medium': require('./assets/fonts/Jost-Medium.ttf'),
+      'Jost-Regular': require('./assets/fonts/Jost-Regular.ttf'),
+   });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+   if (!fontsLoaded) {
+      return <AppLoading/>
+   }
+
+   if (error) {
+      alert('Não foi possível carregar as fontes.');
+   }
+
+   return (
+      <ThemeProvider theme={theme}>
+         <Missions/>
+      </ThemeProvider>
+   );
+}
